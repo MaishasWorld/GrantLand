@@ -2,19 +2,18 @@ const client = require('./client');
 
 // database functions
 async function createActivity({ name, description }) {
-  // return the new activity
-  try{
-    const { rows: [users] } = await client.query(`
-    INSERT INTO users (name, description)
-    VALUES ($1, $2)
-    ON CONFLICT (activity) DO NOTHING
-    RETURNING *;
-    `,[activity]);
-
+  try {
+    // const lowerName = name.toLowerCase();
+    const { rows: [activity] } = await client.query(`
+      INSERT INTO activities(name, description)
+      VALUES ($1, $2)
+      ON CONFLICT (name) DO NOTHING
+      RETURNING *;
+    `, [name, description]
+    );
     return activity;
-    catch (error){
+  } catch (error) {
     throw error;
-    }
   }
 }
 
