@@ -25,3 +25,5 @@ module.exports = {
   getUserById,
   getUserByUsername,
 }
+
+// going to combine two tables 
