@@ -5,6 +5,7 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
     const { rows: [routine] } = await client.query(`
       INSERT INTO routines("creatorId", "isPublic", name, goal)
       VALUES ($1, $2, $3, $4)
+      ON CONFLICT (name) DO NOTHING
       RETURNING *;`
       , [creatorId, isPublic, name, goal])
       return routine;
@@ -13,22 +14,48 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
   }
 }
 
-async function getRoutineById(id) {}
-
-async function getRoutinesWithoutActivities() {
+async function getRoutineById(id) {
   try {
-    const { routines } = await client.query(`
-      SELECT * from routines;
-    `);
-    return routines;
+    const { rows: [routine] } = await client.query(`
+      SELECT * FROM routines
+      WHERE id=$1
+    `, [id])
+    return routine;
   } catch (error) {
     throw error;
   }
 }
 
-async function getAllRoutines() {}
+async function getRoutinesWithoutActivities() {
+  try {
+    const { rows } = await client.query(`
+      SELECT * from routines;
+    `);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
 
-async function getAllPublicRoutines() {}
+async function getAllRoutines() {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
+async function getAllPublicRoutines() {
+  try {
+    let routines = await getAllRoutines();
+
+    routines = routines.filter(routine => {
+      return routine.isPublic
+    });
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function getAllRoutinesByUser({ username }) {}
 
