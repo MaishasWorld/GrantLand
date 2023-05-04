@@ -144,6 +144,7 @@ async function destroyRoutine(id) {
       WHERE "routineId" = $1
     `, [id])
 
+
     const { rows: [routineToRemove] } = await client.query(`
       DELETE FROM routines
       WHERE id=$1
