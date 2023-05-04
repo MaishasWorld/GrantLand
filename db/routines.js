@@ -69,6 +69,7 @@ async function getAllPublicRoutines() {
   }
 }
 
+
 async function getAllRoutinesByUser({ username }) {
   try {
     let routines = await getAllRoutines();
@@ -143,6 +144,7 @@ async function destroyRoutine(id) {
       DELETE FROM routine_activities
       WHERE "routineId" = $1
     `, [id])
+
 
     const { rows: [routineToRemove] } = await client.query(`
       DELETE FROM routines

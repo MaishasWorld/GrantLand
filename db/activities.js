@@ -76,15 +76,15 @@ async function attachActivitiesToRoutines(routines) {
       WHERE routine_activities."routineId" IN (${position})
       `,
       routineIds 
-      ) 
-     ; 
+      ); 
       
 // Loop over each routine
 for (const routine of routinesToReturn){
 
 // If routine.id matches the activity.routineId, then add to routine
 const activitiesToAdd = activities.filter(
-  (activity) => activity.routineId === routine.id);
+  (activity) => activity.routineId === routine.id
+  );
 
 routine.activities = activitiesToAdd;
 }
