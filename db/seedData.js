@@ -5,7 +5,27 @@ const {
   getAllActivities,
   createRoutine,
   addActivityToRoutine,
-  getRoutinesWithoutActivities
+  getRoutinesWithoutActivities,
+  getUser,
+  getUserById,
+  getUserByUsername,
+  getRoutineById,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  updateRoutine,
+  destroyRoutine,
+  getActivityById,
+  getActivityByName,
+  attachActivitiesToRoutines,
+  updateActivity,
+  getRoutineActivityById,
+  getRoutineActivitiesByRoutine,
+  updateRoutineActivity,
+  destroyRoutineActivity,
+  canEditRoutineActivity,
 } = require('./');
 const client = require("./client")
 
@@ -49,7 +69,7 @@ async function createTables() {
       count INTEGER,
       UNIQUE ("routineId", "activityId")
     );
-  `)
+  `) 
 }
 
 /* 

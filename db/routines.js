@@ -71,21 +71,91 @@ async function getAllPublicRoutines() {
 
 
 async function getAllRoutinesByUser({ username }) {
+  try {
+    let routines = await getAllRoutines();
 
+    routines = routines.filter(routine => {
+      return routine.creatorName === username;
+    })
+    return routines;
+  } catch (error) {
+    throw error;
+  }
 }
 
-async function getPublicRoutinesByUser({ username }) {}
+async function getPublicRoutinesByUser({ username }) {
+  try {
+    let routines = await getAllPublicRoutines();
 
-// includes username, from users join, aliased as "creatorName"
+    routines = routines.filter(routine => {
+      return routine.creatorName === username;
+    })
+    return routines;
+  } catch (error) {
+    throw error;
+  }
+}
 
-async function getPublicRoutinesByActivity({ id }) {}
+async function getPublicRoutinesByActivity({ id }) {
+  try {
+    let routines = await getAllPublicRoutines();
+
+    routines = routines.filter(routine => {
+      for(let i=0; i < routine.activities.length; i++){
+        const activity = routine.activities[i];
+
+        if(activity.id === Number(id)) {
+          return routine;
+        }
+      }
+    });
+    return routines;
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function updateRoutine({ id, ...fields }) {
-  // don't update routine id 
-  
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${ key }"=$${ index + 1 }`).join(', '); 
+
+  if (setString.length === 0){
+    return;
+  }
+
+  try {
+    const { rows: [routine] } = await client.query(`
+    UPDATE routines 
+    SET ${setString}
+    WHERE id=${ id }
+    RETURNING *;
+    `, Object.values(fields));
+
+    return routine 
+  } catch (error) {
+    throw error;
+  }
 }
 
-async function destroyRoutine(id) {}
+
+async function destroyRoutine(id) {
+  try {
+    const { rows: routine } = await client.query(`
+      DELETE FROM routine_activities
+      WHERE "routineId" = $1
+    `, [id])
+
+
+    const { rows: [routineToRemove] } = await client.query(`
+      DELETE FROM routines
+      WHERE id=$1
+      RETURNING *
+    `, [id])
+    return routineToRemove;
+  } catch (error) {
+    throw error;
+  }
+}
 
 module.exports = {
   getRoutineById,

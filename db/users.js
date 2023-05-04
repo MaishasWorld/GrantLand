@@ -26,6 +26,7 @@ async function createUser({ username, password }) {
     // delete user.password
     return user;
   } catch (error) {
+    console.error("error in createUser", error)
     throw error;
   }
 }
