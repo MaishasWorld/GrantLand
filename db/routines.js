@@ -45,7 +45,7 @@ async function getAllRoutines() {
           `
           SELECT routines.*, users.username AS "creatorName" 
           FROM routines
-          JOIN users ON routines.creatorId = users.id
+          JOIN users ON routines."creatorId" = users.id
           `);
 
           return await attachActivitiesToRoutines(routines);
@@ -63,12 +63,12 @@ async function getAllPublicRoutines() {
     routines = routines.filter(routine => {
       return routine.isPublic
     });
+    return routines;
   } catch (error) {
     throw error;
   }
 }
 
-// Why is there no test?
 
 async function getAllRoutinesByUser({ username }) {
 
@@ -76,9 +76,14 @@ async function getAllRoutinesByUser({ username }) {
 
 async function getPublicRoutinesByUser({ username }) {}
 
+// includes username, from users join, aliased as "creatorName"
+
 async function getPublicRoutinesByActivity({ id }) {}
 
-async function updateRoutine({ id, ...fields }) {}
+async function updateRoutine({ id, ...fields }) {
+  // don't update routine id 
+  
+}
 
 async function destroyRoutine(id) {}
 
