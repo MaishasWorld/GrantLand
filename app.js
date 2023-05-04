@@ -22,6 +22,7 @@ app.use(function (req, res, next) {
 apiRouter.use((error, req, res, next) => {
     res.send({
       name: error.name,
+      error: error.error, 
       message: error.message
     });
   });
