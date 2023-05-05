@@ -5,6 +5,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const apiRouter = require('./api');
 // Setup your Middleware and API Router here
+const client = require('./db/client');
+client.connect();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
@@ -23,7 +25,7 @@ apiRouter.use((error, req, res, next) => {
     res.send({
       name: error.name,
       error: error.error, 
-      message: error.message
+      message: error.message,
     });
   });
   
