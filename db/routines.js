@@ -69,7 +69,6 @@ async function getAllPublicRoutines() {
   }
 }
 
-
 async function getAllRoutinesByUser({ username }) {
   try {
     let routines = await getAllRoutines();
